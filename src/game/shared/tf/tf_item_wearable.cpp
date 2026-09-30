@@ -11,6 +11,7 @@
 #include "animation.h"
 #include "basecombatweapon_shared.h"
 #include "tf_weapon_mechanical_arm.h"
+#include "tf_weapon_pda.h"
 #ifdef CLIENT_DLL
 #include "c_tf_player.h"
 #include "model_types.h"
@@ -669,6 +670,20 @@ int CTFWearable::GetSkin()
 	if ( nSkin != -1 )
 	{
 		return nSkin;
+	}
+
+	CEconEntity *pBuildEntity = NULL;
+	CEconItemView *pBuildItem = CTFPlayerSharedUtils::GetEconItemViewByLoadoutSlot( pPlayer, LOADOUT_POSITION_PDA, &pBuildEntity );
+	if ( pBuildItem && pBuildItem->IsValid() && pBuildItem->GetItemDefIndex() == 519 )
+	{
+		CTFWeaponPDA_Engineer_Build *pBuildPDA = dynamic_cast< CTFWeaponPDA_Engineer_Build * >( pBuildEntity );
+		if ( pBuildPDA && pBuildPDA->m_hExtraWearable.Get() == this && pPlayer->GetActiveWeapon() )
+		{
+			// Use the active PDA's skin override for the Pip-Boy wearable.
+			int nActiveOverride = pPlayer->GetActiveWeapon()->GetSkinOverride();
+			if ( nActiveOverride != -1 )
+				return nActiveOverride;
+		}
 	}
 
 	return BaseClass::GetSkin();
