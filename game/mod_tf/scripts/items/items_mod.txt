@@ -1,0 +1,14 @@
+"items_game"
+{
+	"attributes"
+	{
+	}
+	
+	"prefabs"
+	{
+	}
+	
+	"items"
+	{
+	}
+}
