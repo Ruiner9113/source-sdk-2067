@@ -943,7 +943,8 @@ void CTFPlayerModelPanel::EquipAllWearables( CEconItemView *pHeldItem )
 		if ( pszAttached && pszAttached[ 0 ] )
 		{
 			const char *pszViewModelAttached = pItem->GetExtraWearableViewModel();
-			if ( pHeldItem == pItem || pszViewModelAttached == NULL || pszViewModelAttached[ 0 ] == '\0' || pszViewModelAttached[ 0 ] == '?' )
+			bool bPersistentPipBoy = pItem->GetItemDefIndex() == 519;
+			if ( bPersistentPipBoy || pHeldItem == pItem || pszViewModelAttached == NULL || pszViewModelAttached[ 0 ] == '\0' || pszViewModelAttached[ 0 ] == '?' )
 			{
 				LoadAndAttachAdditionalModel( pszAttached, pItem );
 			}

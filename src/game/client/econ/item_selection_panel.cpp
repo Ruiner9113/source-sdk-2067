@@ -1014,11 +1014,13 @@ bool TF_ComputePipBoyDestroyName( int iClass, wchar_t *pszNameBuf, int nNameBufC
 		return false;
 
 	V_wcsncpy( pszNameBuf, pPDASlotItem->GetItemName(), nNameBufChars * sizeof( wchar_t ) );
-	V_wcsncat( pszNameBuf, L" (Destruction PDA)", nNameBufChars );
+	const wchar_t *pwszDestroySuffix = g_pVGuiLocalize->Find( "#TF_PipBoy_DestructionPDA" );
+	if ( pwszDestroySuffix )
+		V_wcsncat( pszNameBuf, pwszDestroySuffix, nNameBufChars );
 	return true;
 }
 
-bool TF_SetPipBoyPresentationItem( CItemModelPanel *pPanel, const CEconItemView *pDisplayItem, bool bPipBoyEquipped, const wchar_t *pszPipBoyName )
+bool TF_SetPipBoyPresentationItem( CItemModelPanel *pPanel, const CEconItemView *pDisplayItem, bool bPipBoyEquipped, const wchar_t *pszPipBoyName, const char **ppszDestroyIconPath )
 {
 	if ( bPipBoyEquipped && pDisplayItem && pDisplayItem->IsValid() && pDisplayItem->GetItemDefIndex() == 26 )
 	{
@@ -1026,6 +1028,8 @@ bool TF_SetPipBoyPresentationItem( CItemModelPanel *pPanel, const CEconItemView 
 		presentationItem.SetItemDefIndex( 519 );
 		pPanel->SetItem( &presentationItem );
 		pPanel->SetDisplayNameOverride( pszPipBoyName );
+		if ( ppszDestroyIconPath )
+			*ppszDestroyIconPath = presentationItem.GetStaticData()->GetDefinitionString( "destroy_inventory_image", "" );
 		return true;
 	}
 

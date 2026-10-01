@@ -562,10 +562,12 @@ void CHudWeaponSelection::PerformLayout( void )
 				if ( !pWeapon->VisibleInWeaponSelection() )
 					continue;
 
-				if ( TF_SetPipBoyPresentationItem( m_pModelPanels[i], pWeapon->GetAttributeContainer()->GetItem(), bPipBoyEquipped, m_wszPipBoyDestroyPDAName ) )
+				const char *pszDestroyIconPath = NULL;
+				if ( TF_SetPipBoyPresentationItem( m_pModelPanels[i], pWeapon->GetAttributeContainer()->GetItem(), bPipBoyEquipped, m_wszPipBoyDestroyPDAName, &pszDestroyIconPath ) )
 				{
-					// Use the Pip-Boy Destroy PDA icon only in the weapon selector.
-					m_pModelPanels[i]->SetInventoryImageOverride( "backpack/workshop_partner/player/items/engineer/bet_pb/bet_pb_destroy" );
+					// Use the Pip-Boy Destroy PDA icon (from the item schema) only in the weapon selector.
+					if ( pszDestroyIconPath && pszDestroyIconPath[0] )
+						m_pModelPanels[i]->SetInventoryImageOverride( pszDestroyIconPath );
 				}
 
 				m_pModelPanels[i]->SetSize( rSlot[i].wide, rSlot[ i ].tall );
@@ -593,12 +595,14 @@ void CHudWeaponSelection::PerformLayout( void )
 				if ( !pWeapon )
 					continue;
 
-				if ( TF_SetPipBoyPresentationItem( m_pModelPanels[i], pWeapon->GetAttributeContainer()->GetItem(), bPipBoyEquipped, m_wszPipBoyDestroyPDAName ) )
+				const char *pszDestroyIconPath = NULL;
+				if ( TF_SetPipBoyPresentationItem( m_pModelPanels[i], pWeapon->GetAttributeContainer()->GetItem(), bPipBoyEquipped, m_wszPipBoyDestroyPDAName, &pszDestroyIconPath ) )
 				{
-					// Use the Pip-Boy Destroy PDA icon only in the weapon selector.
-					m_pModelPanels[i]->SetInventoryImageOverride( "backpack/workshop_partner/player/items/engineer/bet_pb/bet_pb_destroy" );
+					// Use the Pip-Boy Destroy PDA icon (from the item schema) only in the weapon selector.
+					if ( pszDestroyIconPath && pszDestroyIconPath[0] )
+						m_pModelPanels[i]->SetInventoryImageOverride( pszDestroyIconPath );
 				}
-				
+
 				m_pModelPanels[i]->SetSize( rSlot[i].wide, rSlot[ i ].tall );
 				vgui::IScheme *pScheme = vgui::scheme()->GetIScheme( GetScheme() );
 				m_pModelPanels[i]->SetBorder( pScheme->GetBorder("TFFatLineBorder") );

@@ -23,7 +23,7 @@ class CItemModelPanel;
 bool TF_ComputePipBoyDestroyName( int iClass, wchar_t *pszNameBuf, int nNameBufChars );
 
 // Presents the Destroy PDA as the Pip-Boy on pPanel when bPipBoyEquipped is true.
-bool TF_SetPipBoyPresentationItem( CItemModelPanel *pPanel, const CEconItemView *pDisplayItem, bool bPipBoyEquipped, const wchar_t *pszPipBoyName );
+bool TF_SetPipBoyPresentationItem( CItemModelPanel *pPanel, const CEconItemView *pDisplayItem, bool bPipBoyEquipped, const wchar_t *pszPipBoyName, const char **ppszDestroyIconPath = NULL );
 
 #define SELECTION_DISPLAY_SLOTS_PER_PAGE	18
 #define SELECTION_DISPLAY_ROWS				3

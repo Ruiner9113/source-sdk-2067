@@ -526,7 +526,8 @@ const CEconItemView *CTFWeaponPDA_Engineer_Destroy::GetWeaponVisualItem( void ) 
 int CTFWeaponPDA_Engineer_Destroy::GetSkinOverride( void ) const
 {
 	// Use the Pip-Boy's Destroy PDA skin when enabled by the item.
-	if ( PipBoyWantsDestroyTexture( GetWeaponVisualItem() ) )
-		return 2;
+	const CEconItemView *pItem = GetWeaponVisualItem();
+	if ( PipBoyWantsDestroyTexture( pItem ) )
+		return V_atoi( pItem->GetStaticData()->GetDefinitionString( "destroy_skin", "-1" ) );
 	return BaseClass::GetSkinOverride();
 }

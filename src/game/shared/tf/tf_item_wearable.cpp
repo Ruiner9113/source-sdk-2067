@@ -383,13 +383,26 @@ bool CTFWearable::ShouldDraw()
 		CTFWeaponBase *pWeapon = assert_cast< CTFWeaponBase* >( GetWeaponAssociatedWith() );
 		if ( pWeapon )
 		{
+			CEconItemView *pItem = pWeapon->GetAttributeContainer()->GetItem();
+			bool bPersistentPipBoy = pItem && pItem->IsValid() && pItem->GetItemDefIndex() == 519;
+
+			if ( bPersistentPipBoy )
+			{
+				if ( IsViewModelWearable() )
+				{
+					CTFWeaponBase *pActiveWeapon = pOwner ? pOwner->GetActiveTFWeapon() : NULL;
+					CEconItemView *pActiveItem = pActiveWeapon ? pActiveWeapon->GetWeaponVisualItem() : NULL;
+					if ( pActiveItem && pActiveItem->IsValid() && pActiveItem->GetItemDefIndex() == 519 )
+						return false;
+				}
+			}
 			// If the weapon isn't active, don't draw
-			if ( pOwner && pOwner->GetActiveWeapon() != pWeapon )
+			else if ( pOwner && pOwner->GetActiveWeapon() != pWeapon )
 			{
 				return false;
 			}
 
-			if ( !IsViewModelWearable() )
+			if ( !IsViewModelWearable() && !bPersistentPipBoy )
 			{
 				// If it's the 3rd person wearable, don't draw it when the weapon is hidden
 				if ( !pWeapon->ShouldDraw() )
