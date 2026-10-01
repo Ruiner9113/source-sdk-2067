@@ -662,7 +662,7 @@ const char *CTFWeaponBase::GetViewModel( int iViewModel ) const
 		CALL_ATTRIB_HOOK_FLOAT_ON_OTHER( pPlayer, iHandModelIndex, wrench_builds_minisentry );			// ...the gunslinger is the only thing that uses this attribute for now
 	}
 
-	const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+	const CEconItemView *pItem = GetWeaponVisualItem();
 	if ( pPlayer && pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
 	{
 		// Should always be valid, because players without classes shouldn't be carrying items
@@ -680,7 +680,7 @@ const char *CTFWeaponBase::GetViewModel( int iViewModel ) const
 //-----------------------------------------------------------------------------
 const char *CTFWeaponBase::GetWorldModel( void ) const
 {
-	const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+	const CEconItemView *pItem = GetWeaponVisualItem();
 	if ( pItem->IsValid() )
 	{
 		if ( pItem->GetWorldDisplayModel() )
@@ -859,7 +859,7 @@ void CTFWeaponBase::Equip( CBaseCombatCharacter *pOwner )
 //-----------------------------------------------------------------------------
 void CTFWeaponBase::UpdateHands( void )
 {
-	const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+	const CEconItemView *pItem = GetWeaponVisualItem();
 	if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
 	{
 		m_iViewModelIndex = CBaseEntity::PrecacheModel( GetViewModel() );
@@ -3083,7 +3083,7 @@ C_BaseAnimating *CTFWeaponBase::GetAppropriateWorldOrViewModel()
 	if ( pPlayerOwner && UsingViewModel() )
 	{
 		// For w_* models the viewmodel itself is just arms+hands. And attached to them is the actual weapon.
-		const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+		const CEconItemView *pItem = GetWeaponVisualItem();
 		if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
 		{
 			C_BaseAnimating *pVMAttach = GetViewmodelAttachment();
@@ -4512,7 +4512,7 @@ viewmodelacttable_t s_viewmodelacttable[] =
 // -----------------------------------------------------------------------------
 Activity CTFWeaponBase::TranslateViewmodelHandActivityInternal( Activity actBase )
 {
-	CEconItemView *pEconItemView = GetAttributeContainer()->GetItem();
+	CEconItemView *pEconItemView = GetWeaponVisualItem();
 	if ( pEconItemView && pEconItemView->IsValid() && GetOwnerEntity() )
 	{
 		Activity translatedActivity = pEconItemView->GetStaticData()->GetActivityOverride( GetOwnerEntity()->GetTeamNumber(), actBase );

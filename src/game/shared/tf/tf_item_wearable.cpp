@@ -11,6 +11,7 @@
 #include "animation.h"
 #include "basecombatweapon_shared.h"
 #include "tf_weapon_mechanical_arm.h"
+#include "tf_weapon_pda.h"
 #ifdef CLIENT_DLL
 #include "c_tf_player.h"
 #include "model_types.h"
@@ -382,13 +383,26 @@ bool CTFWearable::ShouldDraw()
 		CTFWeaponBase *pWeapon = assert_cast< CTFWeaponBase* >( GetWeaponAssociatedWith() );
 		if ( pWeapon )
 		{
+			CEconItemView *pItem = pWeapon->GetAttributeContainer()->GetItem();
+			bool bPersistentPipBoy = pItem && pItem->IsValid() && pItem->GetItemDefIndex() == 519;
+
+			if ( bPersistentPipBoy )
+			{
+				if ( IsViewModelWearable() )
+				{
+					CTFWeaponBase *pActiveWeapon = pOwner ? pOwner->GetActiveTFWeapon() : NULL;
+					CEconItemView *pActiveItem = pActiveWeapon ? pActiveWeapon->GetWeaponVisualItem() : NULL;
+					if ( pActiveItem && pActiveItem->IsValid() && pActiveItem->GetItemDefIndex() == 519 )
+						return false;
+				}
+			}
 			// If the weapon isn't active, don't draw
-			if ( pOwner && pOwner->GetActiveWeapon() != pWeapon )
+			else if ( pOwner && pOwner->GetActiveWeapon() != pWeapon )
 			{
 				return false;
 			}
 
-			if ( !IsViewModelWearable() )
+			if ( !IsViewModelWearable() && !bPersistentPipBoy )
 			{
 				// If it's the 3rd person wearable, don't draw it when the weapon is hidden
 				if ( !pWeapon->ShouldDraw() )
@@ -669,6 +683,20 @@ int CTFWearable::GetSkin()
 	if ( nSkin != -1 )
 	{
 		return nSkin;
+	}
+
+	CEconEntity *pBuildEntity = NULL;
+	CEconItemView *pBuildItem = CTFPlayerSharedUtils::GetEconItemViewByLoadoutSlot( pPlayer, LOADOUT_POSITION_PDA, &pBuildEntity );
+	if ( pBuildItem && pBuildItem->IsValid() && pBuildItem->GetItemDefIndex() == 519 )
+	{
+		CTFWeaponPDA_Engineer_Build *pBuildPDA = dynamic_cast< CTFWeaponPDA_Engineer_Build * >( pBuildEntity );
+		if ( pBuildPDA && pBuildPDA->m_hExtraWearable.Get() == this && pPlayer->GetActiveWeapon() )
+		{
+			// Use the active PDA's skin override for the Pip-Boy wearable.
+			int nActiveOverride = pPlayer->GetActiveWeapon()->GetSkinOverride();
+			if ( nActiveOverride != -1 )
+				return nActiveOverride;
+		}
 	}
 
 	return BaseClass::GetSkin();
