@@ -332,17 +332,17 @@ float CEconEntity::ScriptGetAttribute( const char *pName, float flFallbackValue 
 //-----------------------------------------------------------------------------
 Activity CEconEntity::TranslateViewmodelHandActivity( Activity actBase )
 {
-	CEconItemView *pItem = GetWeaponVisualItem();
-	if ( pItem && pItem->IsValid() )
-	{
-		GameItemDefinition_t *pStaticData = pItem->GetStaticData();
-		if ( pStaticData && pStaticData->ShouldAttachToHands() )
-		{
-			return TranslateViewmodelHandActivityInternal(actBase);
-		}
-	}
+    CEconItemView *pItem = GetAttributeContainer()->GetItem();
+    if ( pItem && pItem->IsValid() )
+    {
+        GameItemDefinition_t *pStaticData = pItem->GetStaticData();
+        if ( pStaticData && pStaticData->ShouldAttachToHands() == ATTACH_TF )
+        {
+            return TranslateViewmodelHandActivityInternal(actBase);
+        }
+    }
 
-	return actBase;
+    return actBase;
 }
 
 #if !defined( CLIENT_DLL )
@@ -382,64 +382,64 @@ int CEconEntity::CalculateVisibleClassFor( CBaseCombatCharacter *pPlayer )
 void CEconEntity::UpdateModelToClass( void )
 {
 #ifdef TF_DLL
-	MDLCACHE_CRITICAL_SECTION();
+    MDLCACHE_CRITICAL_SECTION();
 
-	CTFPlayer *pPlayer = ToTFPlayer( GetOwnerEntity() );
-	m_iOldOwnerClass = CalculateVisibleClassFor( pPlayer );
-	if ( !pPlayer )
-		return;
+    CTFPlayer *pPlayer = ToTFPlayer( GetOwnerEntity() );
+    m_iOldOwnerClass = CalculateVisibleClassFor( pPlayer );
+    if ( !pPlayer )
+        return;
 
-	CEconItemView *pItem = GetAttributeContainer()->GetItem();
-	if ( !pItem->IsValid() )
-		return;
+    CEconItemView *pItem = GetAttributeContainer()->GetItem();
+    if ( !pItem->IsValid() )
+        return;
 
-	const char *pszModel = NULL;
+    const char *pszModel = NULL;
 
-	// If we attach to hands, we need to use the hand models
-	if ( pItem->GetStaticData()->ShouldAttachToHands() )
-	{
-		pszModel = pPlayer->GetPlayerClass()->GetHandModelName( 0 );
-	}
-	else
-	{
-		int nTeam = pPlayer->GetTeamNumber();
-		CTFWearable *pWearable = dynamic_cast< CTFWearable*>( this );
-		if ( pWearable && pWearable->IsDisguiseWearable() )
-		{
-			nTeam = pPlayer->m_Shared.GetDisguiseTeam();
-		}
+    // If we attach to hands, we need to use the hand models
+    if ( pItem->GetStaticData()->ShouldAttachToHands() == ATTACH_TF )
+    {
+        pszModel = pPlayer->GetPlayerClass()->GetHandModelName( 0 );
+    }
+    else
+    {
+        int nTeam = pPlayer->GetTeamNumber();
+        CTFWearable *pWearable = dynamic_cast< CTFWearable*>( this );
+        if ( pWearable && pWearable->IsDisguiseWearable() )
+        {
+            nTeam = pPlayer->m_Shared.GetDisguiseTeam();
+        }
 
-		pszModel = pItem->GetPlayerDisplayModel( m_iOldOwnerClass, nTeam );
-	}
-	if ( pszModel && pszModel[0] )
-	{
-		if ( V_stricmp( STRING( GetModelName() ), pszModel ) != 0 )
-		{
-			if ( pItem->GetStaticData()->IsContentStreamable() )
-			{
-				modelinfo->RegisterDynamicModel( pszModel, IsClient() );
+        pszModel = pItem->GetPlayerDisplayModel( m_iOldOwnerClass, nTeam );
+    }
+    if ( pszModel && pszModel[0] )
+    {
+        if ( V_stricmp( STRING( GetModelName() ), pszModel ) != 0 )
+        {
+            if ( pItem->GetStaticData()->IsContentStreamable() )
+            {
+                modelinfo->RegisterDynamicModel( pszModel, IsClient() );
 
-				const char *pszModelAlt = pItem->GetStaticData()->GetPlayerDisplayModelAlt( m_iOldOwnerClass );
-				if ( pszModelAlt && pszModelAlt[0] )
-				{
-					modelinfo->RegisterDynamicModel( pszModelAlt, IsClient() );
-				}
+                const char *pszModelAlt = pItem->GetStaticData()->GetPlayerDisplayModelAlt( m_iOldOwnerClass );
+                if ( pszModelAlt && pszModelAlt[0] )
+                {
+                    modelinfo->RegisterDynamicModel( pszModelAlt, IsClient() );
+                }
 
-				if ( pItem->GetVisionFilteredDisplayModel() && pItem->GetVisionFilteredDisplayModel()[ 0 ] != '\0' )
-				{
-					modelinfo->RegisterDynamicModel( pItem->GetVisionFilteredDisplayModel(), IsClient() );
-				}
-			}
+                if ( pItem->GetVisionFilteredDisplayModel() && pItem->GetVisionFilteredDisplayModel()[ 0 ] != '\0' )
+                {
+                    modelinfo->RegisterDynamicModel( pItem->GetVisionFilteredDisplayModel(), IsClient() );
+                }
+            }
 
-			SetModel( pszModel );
-		}
-	}
+            SetModel( pszModel );
+        }
+    }
 
-	if ( GetModelPtr() && pItem->GetStaticData()->UsesPerClassBodygroups( GetTeamNumber() ) )
-	{
-		// Classes start at 1, bodygroups at 0, so we shift them all back 1.
-		SetBodygroup( 1, (m_iOldOwnerClass-1) );
-	}
+    if ( GetModelPtr() && pItem->GetStaticData()->UsesPerClassBodygroups( GetTeamNumber() ) )
+    {
+        // Classes start at 1, bodygroups at 0, so we shift them all back 1.
+        SetBodygroup( 1, (m_iOldOwnerClass-1) );
+    }
 #endif
 }
 
@@ -1079,7 +1079,7 @@ void CEconEntity::OnDataChanged( DataUpdateType_t updateType )
 void CEconEntity::UpdateAttachmentModels( void )
 {
 #ifndef DOTA_DLL
-	CEconItemView *pItem = GetWeaponVisualItem();
+	CEconItemView *pItem = GetAttributeContainer()->GetItem();
 	GameItemDefinition_t *pItemDef = pItem && pItem->IsValid() ? pItem->GetStaticData() : NULL;
 
 	// Update the state of additional model attachments
@@ -1132,12 +1132,12 @@ void CEconEntity::UpdateAttachmentModels( void )
 	}
 
 	// Update the state of attachment models for this item
- 	bool bItemNeedsAttachment = pItemDef && (pItemDef->ShouldAttachToHands() || pItemDef->ShouldAttachToHandsVMOnly());
+	bool bItemNeedsAttachment = pItemDef && (pItemDef->ShouldAttachToHands()  == ATTACH_TF || pItemDef->ShouldAttachToHands() == ATTACH_L4D || pItemDef->ShouldAttachToHandsVMOnly());
 	if ( bItemNeedsAttachment )
 	{
 		bool bShouldShowAttachment = false;
 		CBasePlayer *pOwner = ToBasePlayer( GetOwnerEntity() );
-		if ( pOwner && !pOwner->ShouldDrawThisPlayer() )
+		if ( pOwner && ( !pOwner->ShouldDrawThisPlayer() ) )
 		{
 			// Drawing the viewmodel
 			bShouldShowAttachment = true;
@@ -1164,9 +1164,16 @@ void CEconEntity::UpdateAttachmentModels( void )
 						iClass = pTFPlayer->GetPlayerClass()->GetClassIndex();
 					}
 #endif // defined( TF_DLL ) || defined( TF_CLIENT_DLL )
-					if ( pEnt->InitializeAsClientEntity( pItem->GetPlayerDisplayModel( iClass, pOwner->GetTeamNumber() ), RENDER_GROUP_VIEW_MODEL_OPAQUE ) == false )
-						return;
-
+					if(pItemDef->ShouldAttachToHands() == ATTACH_L4D)
+					{
+						if(pEnt->InitializeAsClientEntity(pTFPlayer->GetPlayerClass()->GetHandModelName(0),RENDER_GROUP_VIEW_MODEL_OPAQUE) == false)
+							return;
+					}
+					else
+					{
+						if(pEnt->InitializeAsClientEntity(pItem->GetPlayerDisplayModel(iClass,pOwner->GetTeamNumber()),RENDER_GROUP_VIEW_MODEL_OPAQUE) == false)
+							return;
+					}
 					m_hViewmodelAttachment = pEnt;
 					m_hViewmodelAttachment->SetParent( vm );
 					m_hViewmodelAttachment->SetLocalOrigin( vec3_origin );
@@ -1883,64 +1890,64 @@ bool CEconEntity::IsOverridingViewmodel( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-int	CEconEntity::DrawOverriddenViewmodel( C_BaseViewModel *pViewmodel, int flags )
+int    CEconEntity::DrawOverriddenViewmodel( C_BaseViewModel *pViewmodel, int flags )
 {
-	int ret = 0;
+    int ret = 0;
 #ifndef DOTA_DLL
-	bool bIsAttachmentTranslucent = m_hViewmodelAttachment.Get() ? m_hViewmodelAttachment->IsTransparent() : false;
-	bool bUseOverride = false;
-	
-	CEconItemView *pItem = GetWeaponVisualItem();
-	bool bAttachesToHands = ( pItem->IsValid() && (pItem->GetStaticData()->ShouldAttachToHands() || pItem->GetStaticData()->ShouldAttachToHandsVMOnly()));
+    bool bIsAttachmentTranslucent = m_hViewmodelAttachment.Get() ? m_hViewmodelAttachment->IsTransparent() : false;
+    bool bUseOverride = false;
+    
+    CEconItemView *pItem = GetAttributeContainer()->GetItem();
+    bool bAttachesToHands = ( pItem->IsValid() && (pItem->GetStaticData()->ShouldAttachToHands() != 0 || pItem->GetStaticData()->ShouldAttachToHandsVMOnly()));
 
-	// If the attachment is translucent, we need to render the viewmodel first
-	if ( bIsAttachmentTranslucent )
-	{
-		ret = pViewmodel->DrawOverriddenViewmodel( flags );
-	}
+    // If the attachment is translucent, we need to render the viewmodel first
+    if ( bIsAttachmentTranslucent )
+    {
+        ret = pViewmodel->DrawOverriddenViewmodel( flags );
+    }
 
-	if ( flags & STUDIO_RENDER )
-	{
-		// If there is some other material override, it's probably the client asking for us to render invuln or the 
-		// spy cloaking. Those are way more important than ours, so do them instead.
-		IMaterial* pOverrideMaterial = NULL;
-		OverrideType_t nDontcare = OVERRIDE_NORMAL;
-		modelrender->GetMaterialOverride( &pOverrideMaterial, &nDontcare );
-		bool bIgnoreOverride = pOverrideMaterial != NULL;
+    if ( flags & STUDIO_RENDER )
+    {
+        // If there is some other material override, it's probably the client asking for us to render invuln or the 
+        // spy cloaking. Those are way more important than ours, so do them instead.
+        IMaterial* pOverrideMaterial = NULL;
+        OverrideType_t nDontcare = OVERRIDE_NORMAL;
+        modelrender->GetMaterialOverride( &pOverrideMaterial, &nDontcare );
+        bool bIgnoreOverride = pOverrideMaterial != NULL;
 
-		bUseOverride = !bIgnoreOverride && (GetTeamNumber() >= 0 && GetTeamNumber() < TEAM_VISUAL_SECTIONS) && m_MaterialOverrides[GetTeamNumber()].IsValid();
-		if ( bUseOverride )
-		{
-			modelrender->ForcedMaterialOverride( m_MaterialOverrides[GetTeamNumber()] );
-			flags |= STUDIO_NO_OVERRIDE_FOR_ATTACH;
-		}
-	
-		if ( m_hViewmodelAttachment )
-		{
-			m_hViewmodelAttachment->RemoveEffects( EF_NODRAW );
-			m_hViewmodelAttachment->DrawModel( flags );
-			m_hViewmodelAttachment->AddEffects( EF_NODRAW );
-		}
+        bUseOverride = !bIgnoreOverride && (GetTeamNumber() >= 0 && GetTeamNumber() < TEAM_VISUAL_SECTIONS) && m_MaterialOverrides[GetTeamNumber()].IsValid();
+        if ( bUseOverride )
+        {
+            modelrender->ForcedMaterialOverride( m_MaterialOverrides[GetTeamNumber()] );
+            flags |= STUDIO_NO_OVERRIDE_FOR_ATTACH;
+        }
+    
+        if ( m_hViewmodelAttachment )
+        {
+            m_hViewmodelAttachment->RemoveEffects( EF_NODRAW );
+            m_hViewmodelAttachment->DrawModel( flags );
+            m_hViewmodelAttachment->AddEffects( EF_NODRAW );
+        }
 
-		// if we are attached to the hands, then we DO NOT want have an override material when we draw our view model
-		if ( bAttachesToHands && bUseOverride )
-		{
-			modelrender->ForcedMaterialOverride( NULL );
-			bUseOverride = false;
-		}
-	}
+        // if we are attached to the hands, then we DO NOT want have an override material when we draw our view model
+        if ( bAttachesToHands && bUseOverride )
+        {
+            modelrender->ForcedMaterialOverride( NULL );
+            bUseOverride = false;
+        }
+    }
 
-	if ( !bIsAttachmentTranslucent )
-	{
-		ret = pViewmodel->DrawOverriddenViewmodel( flags );
-	}
+    if ( !bIsAttachmentTranslucent )
+    {
+        ret = pViewmodel->DrawOverriddenViewmodel( flags );
+    }
 
-	if ( bUseOverride )
-	{
-		modelrender->ForcedMaterialOverride( NULL );
-	}
+    if ( bUseOverride )
+    {
+        modelrender->ForcedMaterialOverride( NULL );
+    }
 #endif // !defined( DOTA_DLL )
-	return ret;
+    return ret;
 }
 
 //-----------------------------------------------------------------------------

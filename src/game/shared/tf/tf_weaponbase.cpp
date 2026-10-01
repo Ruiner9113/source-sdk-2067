@@ -650,29 +650,32 @@ bool CTFWeaponBase::UsesPrimaryAmmo( void )
 // -----------------------------------------------------------------------------
 const char *CTFWeaponBase::GetViewModel( int iViewModel ) const
 {
-	if ( GetPlayerOwner() == NULL )
-		return BaseClass::GetViewModel();
+    if ( GetPlayerOwner() == NULL )
+        return BaseClass::GetViewModel();
 
-	CTFPlayer *pPlayer = ToTFPlayer( GetOwner() );
+    CTFPlayer *pPlayer = ToTFPlayer( GetOwner() );
+    if (!pPlayer)
+        return BaseClass::GetViewModel();
+    int iPlrClass = pPlayer->GetPlayerClass()->GetClassIndex();
 
-	int iHandModelIndex = 0;
-	if ( pPlayer )
-	{
-		//CALL_ATTRIB_HOOK_FLOAT_ON_OTHER( pPlayer, iHandModelIndex, override_hand_model_index );		// this is a cleaner way of doing it, but...
-		CALL_ATTRIB_HOOK_FLOAT_ON_OTHER( pPlayer, iHandModelIndex, wrench_builds_minisentry );			// ...the gunslinger is the only thing that uses this attribute for now
-	}
+    int iHandModelIndex = 0;
+    if ( pPlayer )
+    {
+        //CALL_ATTRIB_HOOK_FLOAT_ON_OTHER( pPlayer, iHandModelIndex, override_hand_model_index );        // this is a cleaner way of doing it, but...
+        CALL_ATTRIB_HOOK_FLOAT_ON_OTHER( pPlayer, iHandModelIndex, wrench_builds_minisentry );            // ...the gunslinger is the only thing that uses this attribute for now
+    }
 
-	const CEconItemView *pItem = GetWeaponVisualItem();
-	if ( pPlayer && pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
-	{
-		// Should always be valid, because players without classes shouldn't be carrying items
-		const char *pszHandModel = pPlayer->GetPlayerClass()->GetHandModelName( iHandModelIndex );
-		Assert( pszHandModel );
+    const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+    if ( pPlayer && pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() == ATTACH_TF )
+    {
+        // Should always be valid, because players without classes shouldn't be carrying items
+        const char *pszHandModel = pPlayer->GetPlayerClass()->GetHandModelName( iHandModelIndex );
+        Assert( pszHandModel );
 
-		return pszHandModel;
-	}
+        return pszHandModel;
+    }
 
-	return GetTFWpnData().szViewModel;
+    return     pItem->GetPlayerDisplayModel(iPlrClass,pPlayer->GetTeamNumber());
 }
 
 //-----------------------------------------------------------------------------
@@ -859,11 +862,11 @@ void CTFWeaponBase::Equip( CBaseCombatCharacter *pOwner )
 //-----------------------------------------------------------------------------
 void CTFWeaponBase::UpdateHands( void )
 {
-	const CEconItemView *pItem = GetWeaponVisualItem();
-	if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
-	{
-		m_iViewModelIndex = CBaseEntity::PrecacheModel( GetViewModel() );
-	}
+    const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+    if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() == ATTACH_TF )
+    {
+        m_iViewModelIndex = CBaseEntity::PrecacheModel( GetViewModel() );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -3079,34 +3082,34 @@ bool CTFWeaponBase::UsingViewModel()
 
 C_BaseAnimating *CTFWeaponBase::GetAppropriateWorldOrViewModel()
 {
-	C_TFPlayer *pPlayerOwner = GetTFPlayerOwner();
-	if ( pPlayerOwner && UsingViewModel() )
-	{
-		// For w_* models the viewmodel itself is just arms+hands. And attached to them is the actual weapon.
-		const CEconItemView *pItem = GetWeaponVisualItem();
-		if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() )
-		{
-			C_BaseAnimating *pVMAttach = GetViewmodelAttachment();
-			if ( pVMAttach != NULL )
-			{
-				return pVMAttach;
-			}
-		}
+    C_TFPlayer *pPlayerOwner = GetTFPlayerOwner();
+    if ( pPlayerOwner && UsingViewModel() )
+    {
+        // For w_* models the viewmodel itself is just arms+hands. And attached to them is the actual weapon.
+        const CEconItemView *pItem = GetAttributeContainer()->GetItem();
+        if ( pItem->IsValid() && pItem->GetStaticData()->ShouldAttachToHands() == ATTACH_TF )
+        {
+            C_BaseAnimating *pVMAttach = GetViewmodelAttachment();
+            if ( pVMAttach != NULL )
+            {
+                return pVMAttach;
+            }
+        }
 
-		// Nope - it's a standard viewmodel.
-		C_BaseAnimating *pViewModel = pPlayerOwner->GetViewModel();
-		if ( pViewModel != NULL )
-		{
-			return pViewModel;
-		}
+        // Nope - it's a standard viewmodel.
+        C_BaseAnimating *pViewModel = pPlayerOwner->GetViewModel();
+        if ( pViewModel != NULL )
+        {
+            return pViewModel;
+        }
 
-		// No viewmodel, so just return the normal model.
-		return this;
-	}
-	else
-	{
-		return this;
-	}
+        // No viewmodel, so just return the normal model.
+        return this;
+    }
+    else
+    {
+        return this;
+    }
 }
 
 

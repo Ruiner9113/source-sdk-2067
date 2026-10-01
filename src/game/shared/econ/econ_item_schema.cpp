@@ -2293,7 +2293,7 @@ m_pszWorldExtraWearableViewModel( NULL ),
 m_pszVisionFilteredDisplayModel( NULL ),
 m_pszBrassModelOverride( NULL ),
 m_bHideBodyGroupsDeployedOnly( false ),
-m_bAttachToHands( false ),
+m_iAttachToHands( 0 ),
 m_bAttachToHandsVMOnly( false ),
 m_bProperName( false ),
 m_bFlipViewModel( false ),
@@ -2376,7 +2376,7 @@ bool CEconItemDefinition::BInitFromTestItemKVs( int iNewDefIndex, KeyValues *pKV
 
 		m_pszBaseDisplayModel = pKVItem->GetString( "model_player", NULL );
 		m_pszVisionFilteredDisplayModel = pKVItem->GetString( "model_vision_filtered", NULL );
-		m_bAttachToHands = pKVItem->GetInt( "attach_to_hands", 0 ) != 0;
+		m_iAttachToHands = pKVItem->GetInt( "attach_to_hands", 0 ) != 0;
 
 		BInitVisualBlockFromKV( pKVItem );
 	}
@@ -3164,7 +3164,7 @@ bool CEconItemDefinition::BInitFromKV( KeyValues *pKVItem, CUtlVector<CUtlString
 	m_pszVisionFilteredDisplayModel = pKVItem->GetString( "model_vision_filtered", NULL );
 	m_pszBrassModelOverride = m_pKVItem->GetString( "brass_eject_model", NULL );
 	m_bHideBodyGroupsDeployedOnly = m_pKVItem->GetBool( "hide_bodygroups_deployed_only" );
-	m_bAttachToHands = m_pKVItem->GetInt( "attach_to_hands", 0 ) != 0;
+	m_iAttachToHands = m_pKVItem->GetInt( "attach_to_hands", 0 );
 	m_bAttachToHandsVMOnly = m_pKVItem->GetInt( "attach_to_hands_vm_only", 0 ) != 0;
 	m_bProperName = m_pKVItem->GetInt( "propername", 0 ) != 0;
 	m_bFlipViewModel = m_pKVItem->GetInt( "flip_viewmodel", 0 ) != 0;
@@ -4424,7 +4424,7 @@ bool CEconItemSchema::BInitTextBuffer( CUtlBuffer &buffer, CUtlVector<CUtlString
 	m_pKVRawDefinition = new KeyValues( "CEconItemSchema" );
 	//if ( m_pKVRawDefinition->LoadFromBuffer( NULL, buffer ) )
 	// load the custom item schema instead. This, in turn, still loads the base schema (first line of our item schema is '#base items_game.txt').
-	if ( m_pKVRawDefinition->LoadFromFile( g_pFullFileSystem, "scripts/items/items_manifest.txt", "GAME") )
+	if ( m_pKVRawDefinition->LoadFromFile( g_pFullFileSystem, "scripts/items/items_mod.txt", "GAME") )
 	{
 		return BInitSchema( m_pKVRawDefinition, pVecErrors )
 			&& BPostSchemaInit( pVecErrors );

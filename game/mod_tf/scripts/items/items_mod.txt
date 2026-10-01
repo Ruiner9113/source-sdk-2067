@@ -1,3 +1,5 @@
+#base items_game.txt
+
 "items_game"
 {
 	"attributes"
@@ -6,10 +8,59 @@
 	
 	"prefabs"
 	{
+		"weapon_bat"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_bat_scout.mdl"
+			"model_world"		"models/weapons/w_models/w_bat.mdl"
+		}
+		"weapon_pistol"
+		{
+			"attach_to_hands"	"2"
+			"model_world"		"models/weapons/w_models/w_pistol.mdl"
+			"model_player_per_class"
+			{
+				"engineer"	"models/weapons/v_models/v_pistol_engineer.mdl"
+				"scout"		"models/weapons/v_models/v_pistol_scout.mdl"
+			}
+		}
+		"weapon_revolver"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_revolver_spy.mdl"
+			"model_world"		"models/weapons/w_models/w_revolver.mdl"
+		}
+		"weapon_rocketlauncher"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_rocketlauncher_soldier.mdl"
+			"model_world"		"models/weapons/w_models/w_rocketlauncher.mdl"
+		}
+		"weapon_shotgun"
+		{
+		}
+		"weapon_shovel"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_shovel_soldier.mdl"
+			"model_world"		"models/weapons/w_models/w_shovel.mdl"
+		}
+		"weapon_scattergun"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_scattergun_scout.mdl"
+			"model_world"		"models/weapons/w_models/w_scattergun.mdl"
+		}
 	}
 	
 	"items"
 	{
+		"24"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_revolver_spy.mdl"
+			"model_world"		"models/weapons/w_models/w_revolver.mdl"
+		}
 		"519"
 		{
 			"item_class"				"tf_weapon_pda_engineer_build"
