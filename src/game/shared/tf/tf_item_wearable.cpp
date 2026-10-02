@@ -690,7 +690,7 @@ int CTFWearable::GetSkin()
 	if ( pBuildItem && pBuildItem->IsValid() && pBuildItem->GetItemDefIndex() == 519 )
 	{
 		CTFWeaponPDA_Engineer_Build *pBuildPDA = dynamic_cast< CTFWeaponPDA_Engineer_Build * >( pBuildEntity );
-		if ( pBuildPDA && pBuildPDA->m_hExtraWearable.Get() == this && pPlayer->GetActiveWeapon() )
+		if ( pBuildPDA && ( pBuildPDA->m_hExtraWearable.Get() == this || pBuildPDA->m_hExtraWearableViewModel.Get() == this ) && pPlayer->GetActiveWeapon() )
 		{
 			// Use the active PDA's skin override for the Pip-Boy wearable.
 			int nActiveOverride = pPlayer->GetActiveWeapon()->GetSkinOverride();
