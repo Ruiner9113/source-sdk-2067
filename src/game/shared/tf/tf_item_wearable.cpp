@@ -391,7 +391,7 @@ bool CTFWearable::ShouldDraw()
 				if ( IsViewModelWearable() )
 				{
 					CTFWeaponBase *pActiveWeapon = pOwner ? pOwner->GetActiveTFWeapon() : NULL;
-					CEconItemView *pActiveItem = pActiveWeapon ? pActiveWeapon->GetWeaponVisualItem() : NULL;
+					CEconItemView *pActiveItem = pActiveWeapon ? pActiveWeapon->GetAttributeContainer()->GetItem() : NULL;
 					if ( pActiveItem && pActiveItem->IsValid() && pActiveItem->GetItemDefIndex() == 519 )
 						return false;
 				}
