@@ -120,6 +120,9 @@ public:
 	virtual CEconItemView *GetWeaponVisualItem( void ) OVERRIDE;
 	virtual const CEconItemView *GetWeaponVisualItem( void ) const OVERRIDE;
 	virtual int		GetSkinOverride( void ) const OVERRIDE;
+#ifdef CLIENT_DLL
+	virtual bool	AttachmentModelsShouldBeVisible( void ) OVERRIDE;
+#endif
 };
 
 class CTFWeaponPDA_Spy : public CTFWeaponPDA

@@ -531,3 +531,14 @@ int CTFWeaponPDA_Engineer_Destroy::GetSkinOverride( void ) const
 		return V_atoi( pItem->GetStaticData()->GetDefinitionString( "destroy_skin", "-1" ) );
 	return BaseClass::GetSkinOverride();
 }
+
+#ifdef CLIENT_DLL
+bool CTFWeaponPDA_Engineer_Destroy::AttachmentModelsShouldBeVisible( void )
+{
+	CEconItemView *pItem = GetWeaponVisualItem();
+	if ( pItem && pItem->IsValid() && pItem->GetItemDefIndex() == 519 )
+		return false;
+
+	return BaseClass::AttachmentModelsShouldBeVisible();
+}
+#endif
