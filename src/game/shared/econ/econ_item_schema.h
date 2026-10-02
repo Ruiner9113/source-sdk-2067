@@ -1291,7 +1291,7 @@ public:
 	bool		HasProperName( void ) const			{ return m_bProperName; }
 	const char	*GetClassToken( void ) const		{ return m_pszClassToken; }
 	const char	*GetSlotToken( void ) const			{ return m_pszSlotToken; }
-	bool		ShouldAttachToHands( void ) const	{ return m_iAttachToHands; }
+	int			ShouldAttachToHands( void ) const	{ return m_iAttachToHands; }
 	bool		ShouldAttachToHandsVMOnly( void ) const	{ return m_bAttachToHandsVMOnly; }
 	bool		ShouldFlipViewmodels( void ) const	{ return m_bFlipViewModel; }
 	int			GetInventoryImagePosition( int iIndex ) const	{ Assert( iIndex >= 0 && iIndex < 2); return m_iInventoryImagePosition[iIndex]; }

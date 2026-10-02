@@ -2376,7 +2376,7 @@ bool CEconItemDefinition::BInitFromTestItemKVs( int iNewDefIndex, KeyValues *pKV
 
 		m_pszBaseDisplayModel = pKVItem->GetString( "model_player", NULL );
 		m_pszVisionFilteredDisplayModel = pKVItem->GetString( "model_vision_filtered", NULL );
-		m_iAttachToHands = pKVItem->GetInt( "attach_to_hands", 0 ) != 0;
+		m_iAttachToHands = pKVItem->GetInt( "attach_to_hands", 0 );
 
 		BInitVisualBlockFromKV( pKVItem );
 	}

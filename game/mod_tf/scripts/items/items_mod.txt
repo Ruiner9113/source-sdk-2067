@@ -55,6 +55,9 @@
 	
 	"items"
 	{
+		"0"
+		{
+		}
 		"24"
 		{
 			"attach_to_hands"	"2"
