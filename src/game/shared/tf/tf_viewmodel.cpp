@@ -323,7 +323,7 @@ void CTFViewModel::StandardBlendingRules( CStudioHdr *hdr, Vector pos[], Quatern
 	{
 		CTFMinigun *pMinigun = ( CTFMinigun * )pWeapon;
 
-		int iBarrelBone = Studio_BoneIndexByName( hdr, "v_minigun_barrel" );
+		int iBarrelBone = Studio_BoneIndexByName( hdr, "barrel" );
 
 //		Assert( iBarrelBone != -1 );
 

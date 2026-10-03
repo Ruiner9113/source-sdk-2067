@@ -8,6 +8,30 @@
 	
 	"prefabs"
 	{
+		"weapon_club"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_machete_sniper.mdl"
+			"model_world"		"models/weapons/w_models/w_machete.mdl"
+		}
+		"weapon_bonesaw"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_bonesaw_medic.mdl"
+			"model_world"		"models/weapons/w_models/w_bonesaw.mdl"
+		}
+		"weapon_fireaxe"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_fireaxe_pyro.mdl"
+			"model_world"		"models/weapons/w_models/w_fireaxe.mdl"
+		}
+		"weapon_fists"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_fist_heavy.mdl"
+			"model_world"		""
+		}
 		"weapon_bat"
 		{
 			"attach_to_hands"	"2"
@@ -44,6 +68,12 @@
 		{
 			"model_world"		"models/weapons/w_models/w_shotgun.mdl"
 		}
+		"weapon_minigun"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_minigun_heavy.mdl"
+			"model_world"		"models/weapons/w_models/w_minigun.mdl"
+		}
 		"weapon_shovel"
 		{
 			"attach_to_hands"	"2"
@@ -55,6 +85,12 @@
 			"attach_to_hands"	"2"
 			"model_player"		"models/weapons/v_models/v_scattergun_scout.mdl"
 			"model_world"		"models/weapons/w_models/w_scattergun.mdl"
+		}
+		"weapon_wrench"
+		{
+			"attach_to_hands"	"2"
+			"model_player"		"models/weapons/v_models/v_wrench_engineer.mdl"
+			"model_world"		"models/weapons/w_models/w_wrench.mdl"
 		}
 	}
 	
