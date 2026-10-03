@@ -534,13 +534,10 @@ public:
 	{
 		GCSDK::CProtoBufMsg< CMsgUpdateItemSchema > msg( pNetPacket );
 
-#if ( defined( GAME_DLL ) || defined( CLIENT_DLL ) ) && ( defined( _DEBUG ) || defined( STAGING_ONLY ) )
-		const bool bUseGCCopy = items_game_use_gc_copy.GetBool();
-#else
-		const bool bUseGCCopy = true;
-#endif
 
-		if ( bUseGCCopy == false && k_EUniversePublic != GetUniverse() )
+		const bool bUseGCCopy = false;
+
+		if ( bUseGCCopy == false )
 		{
 			Msg( "Loading item schema from local file.\n" );
 			KeyValuesAD pItemsGameKV( "ItemsGameFile" );

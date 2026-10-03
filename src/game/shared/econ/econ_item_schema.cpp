@@ -4422,9 +4422,7 @@ bool CEconItemSchema::BInitTextBuffer( CUtlBuffer &buffer, CUtlVector<CUtlString
 
 	Reset();
 	m_pKVRawDefinition = new KeyValues( "CEconItemSchema" );
-	//if ( m_pKVRawDefinition->LoadFromBuffer( NULL, buffer ) )
-	// load the custom item schema instead. This, in turn, still loads the base schema (first line of our item schema is '#base items_game.txt').
-	if ( m_pKVRawDefinition->LoadFromFile( g_pFullFileSystem, "scripts/items/items_mod.txt", "GAME") )
+	if ( m_pKVRawDefinition->LoadFromBuffer( NULL, buffer ) )
 	{
 		return BInitSchema( m_pKVRawDefinition, pVecErrors )
 			&& BPostSchemaInit( pVecErrors );
