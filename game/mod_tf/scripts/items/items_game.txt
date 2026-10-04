@@ -18279,8 +18279,9 @@
 			"image_inventory"	"backpack/weapons/c_models/c_double_barrel"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_double_barrel.mdl"
-			"attach_to_hands" "1"
+			"model_player"	"models/weapons/c_models/c_v_double_barrel.mdl"
+			"model_world"	"models/weapons/c_models/c_double_barrel.mdl"
+			"attach_to_hands" "2"
 			"inspect_panel_dist" "38"
 			"used_by_classes"
 			{
@@ -18334,24 +18335,6 @@
 				"sound_burst"	"Weapon_Scatter_Gun_Double.SingleCrit"
 				"muzzle_flash"	"muzzle_bignasty"
 				"tracer_effect"	"bullet_bignasty_tracer01"
-
-				"animation_replacement"
-				{
-					"ACT_VM_IDLE"						"ACT_ITEM2_VM_IDLE"
-					"ACT_VM_DRAW"						"ACT_ITEM2_VM_DRAW"
-					"ACT_VM_HOLSTER"					"ACT_ITEM2_VM_HOLSTER"
-					"ACT_VM_PULLBACK"					"ACT_ITEM2_VM_PULLBACK"
-					"ACT_VM_PRIMARYATTACK"				"ACT_ITEM2_VM_PRIMARYATTACK"
-					"ACT_VM_SECONDARYATTACK"			"ACT_ITEM2_VM_SECONDARYATTACK"
-					"ACT_VM_RELOAD"						"ACT_ITEM2_VM_RELOAD"
-					"ACT_VM_DRYFIRE"					"ACT_ITEM2_VM_DRYFIRE"
-					"ACT_VM_IDLE_TO_LOWERED"			"ACT_ITEM2_VM_IDLE_TO_LOWERED"
-					"ACT_VM_IDLE_LOWERED"				"ACT_ITEM2_VM_IDLE_LOWERED"
-					"ACT_VM_LOWERED_TO_IDLE"			"ACT_ITEM2_VM_LOWERED_TO_IDLE"
-					"ACT_PRIMARY_VM_INSPECT_START"		"ACT_ITEM2_VM_INSPECT_START"
-					"ACT_PRIMARY_VM_INSPECT_IDLE"		"ACT_ITEM2_VM_INSPECT_IDLE"
-					"ACT_PRIMARY_VM_INSPECT_END"		"ACT_ITEM2_VM_INSPECT_END"
-				}
 			}
 			"mouse_pressed_sound"	"ui/item_heavy_gun_pickup.wav"
 			"drop_sound"		"ui/item_heavy_gun_drop.wav"
@@ -19766,11 +19749,12 @@
 			"item_quality"	"unique"
 			"min_ilevel"	"1"
 			"max_ilevel"	"99"
-			"attach_to_hands" "1"
+			"attach_to_hands" "2"
 			"image_inventory"	"backpack/weapons/w_models/w_builder"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_builder/c_builder.mdl"
+			"model_player"	"models/weapons/v_models/v_builder_engineer.mdl"
+			"model_world"	"models/weapons/w_models/w_builder.mdl"
 			"used_by_classes"
 			{
 				"engineer"	"1"
@@ -20776,13 +20760,6 @@
 			"visuals"
 			{
 				"sound_deploy"	"Scout.DodgeCanOpen"
-
-				"animation_replacement"
-				{
-					"ACT_SECONDARY_VM_INSPECT_START"	"ACT_ITEM1_VM_INSPECT_START"
-					"ACT_SECONDARY_VM_INSPECT_IDLE"		"ACT_ITEM1_VM_INSPECT_IDLE"
-					"ACT_SECONDARY_VM_INSPECT_END"		"ACT_ITEM1_VM_INSPECT_END"
-				}
 
 				"player_poseparam"
 				{
@@ -23494,9 +23471,10 @@
 			"image_inventory"	"backpack/weapons/c_models/c_w_ludmila/c_w_ludmila"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_minigun/c_minigun_natascha.mdl"
+			"model_player"	"models/weapons/v_models/v_minigun_heavy.mdl"
+			"model_world"	"models/weapons/w_models/w_minigun.mdl"
 			"inspect_panel_dist" "88"
-			"attach_to_hands"	"1"
+			"attach_to_hands"	"2"
 			"item_quality"	"unique"
 			"min_ilevel"	"5"
 			"max_ilevel"	"5"
@@ -23538,6 +23516,27 @@
 			}
 			"visuals"
 			{
+				"styles"
+				{
+					"0"
+					{
+						"skin_red"		"10"
+						"skin_blu"		"11"
+					}
+				}
+				"attached_models"
+				{
+					"0"
+					{
+						"model_display_flags"	"1"
+						"model"	"models/weapons/c_models/c_w_ludmila/c_w_ludmila.mdl"
+					}
+					"1"
+					{
+ 						"model_display_flags"	"2"
+ 						"model" "models/weapons/c_models/c_v_ludmila/c_v_ludmila.mdl"
+ 					}
+ 				}
 				"attached_models_festive"
 				{
 					"0"
@@ -23678,11 +23677,12 @@
 			"min_ilevel"	"15"
 			"max_ilevel"	"15"
 			"inspect_panel_dist" "45"
-			"attach_to_hands"	"1"
+			"attach_to_hands"	"2"
 			"image_inventory"	"backpack/weapons/c_models/c_wooden_bat/c_wooden_bat"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_wooden_bat/c_wooden_bat.mdl"
+			"model_player"	"models/weapons/c_models/c_v_wooden_bat/c_v_wooden_bat.mdl"
+			"model_world"	"models/weapons/c_models/c_wooden_bat/c_wooden_bat.mdl"
 			"visuals"
 			{
 				"styles"
@@ -27362,10 +27362,19 @@
 			"item_description"	"#TF_Unique_EnergyDrink_CritCola_Desc"
 			"image_inventory"	"backpack/weapons/c_models/c_energy_drink/c_critcola"
 			"inspect_panel_dist" 			"20"
-			"model_player"	"models/weapons/c_models/c_energy_drink/c_energy_drink.mdl"
+			"attach_to_hands"	"2"
+			"model_player"	"models/weapons/c_models/c_v_energy_drink/c_v_energy_drink.mdl"
+			"model_world"	"models/weapons/c_models/c_energy_drink/c_energy_drink.mdl"
 			"visuals"
 			{
-				"skin" "2"
+				"styles"
+				{
+					"0"
+					{
+						"skin_red"		"2"
+						"skin_blu"		"3"
+					}
+				}
 				"custom_particlesystem"
 				{
 					"system"	"energydrink_cola_splash"
