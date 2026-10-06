@@ -16664,8 +16664,9 @@
 			"image_inventory"	"backpack/weapons/c_models/c_backburner/c_backburner"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_flamethrower/c_backburner.mdl"
-			"attach_to_hands"	"1"
+			"model_player"	"models/weapons/v_models/v_flamethrower_pyro.mdl"
+			"model_world"	"models/weapons/w_models/w_flamethrower.mdl"
+			"attach_to_hands"	"2"
 			"item_quality"	"unique"
 			"propername"	"1"
 			"min_ilevel"	"1"
@@ -16679,6 +16680,19 @@
 			}
 			"visuals"
 			{
+				"attached_models"
+				{
+					"0"
+					{
+						"model_display_flags"	"1"
+						"model"	"models/weapons/c_models/c_backburner/c_backburner.mdl"
+					}
+					"1"
+					{
+ 						"model_display_flags"	"2"
+ 						"model" "models/weapons/c_models/c_v_backburner/c_v_backburner.mdl"
+ 					}
+ 				}
 				"sound_single_shot"	"Weapon_BackBurner.FireStart"
 				"sound_special1"	"Weapon_BackBurner.FireLoop"
 				"sound_burst"	"Weapon_BackBurner.FireLoopCrit"
@@ -23404,8 +23418,9 @@
 			"image_inventory"	"backpack/weapons/c_models/c_backburner/c_backburner"
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
-			"model_player"	"models/weapons/c_models/c_flamethrower/c_backburner.mdl"
-			"attach_to_hands"	"1"
+			"model_player"	"models/weapons/v_models/v_flamethrower_pyro.mdl"
+			"model_world"	"models/weapons/w_models/w_flamethrower.mdl"
+			"attach_to_hands"	"2"
 			"item_quality"	"unique"
 			"propername"	"1"
 			"min_ilevel"	"10"
@@ -23420,6 +23435,19 @@
 			}
 			"visuals"
 			{
+				"attached_models"
+				{
+					"0"
+					{
+						"model_display_flags"	"1"
+						"model"	"models/weapons/c_models/c_backburner/c_backburner.mdl"
+					}
+					"1"
+					{
+ 						"model_display_flags"	"2"
+ 						"model" "models/weapons/c_models/c_v_backburner/c_v_backburner.mdl"
+ 					}
+ 				}
 				"sound_single_shot"	"Weapon_BackBurner.FireStart"
 				"sound_special1"	"Weapon_BackBurner.FireLoop"
 				"sound_burst"	"Weapon_BackBurner.FireLoopCrit"
@@ -38496,8 +38524,9 @@
 			"image_inventory_size_w"		"128"
 			"image_inventory_size_h"		"82"
 			"inspect_panel_dist" 			"45"
-			"model_player"	"models/workshop/weapons/c_models/c_drg_righteousbison/c_drg_righteousbison.mdl"
-			"attach_to_hands" "1"
+			"model_player"	"models/workshop/weapons/c_models/c_v_drg_righteousbison/c_v_drg_righteousbison.mdl"
+			"model_world"	"models/workshop/weapons/c_models/c_drg_righteousbison/c_drg_righteousbison.mdl"
+			"attach_to_hands" "2"
 			"used_by_classes"
 			{
 				"soldier"	"1"
